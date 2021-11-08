@@ -1,6 +1,10 @@
 # Sistema de gestion de proyectos
 Presentaciones: <br>
 
+Integrante: Juan Esteban Aristizabal Aristizabal<br>
+Rol: Analista.<br>
+Datos básicos: soy de la ciudad de Medellín, soy estudiante de ingenieria de sistemas en la Universidad de Antioquia. Tengo 24 años, me gustan los videojuegos, los sistemas, el hacking y los deportes de combate.
+
 Integrante: Jaime Andrés Muñoz Quiñones<br>
 Rol: Administrador de bases de datos<br>
 Datos básicos: Vivo en Bello, Medellín. Soy estudiante de la universidad de Antioquia
