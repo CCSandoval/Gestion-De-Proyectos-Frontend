@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .sidebar {
-  @apply w-64 bg-gray-200 shadow flex-col justify-between;
+  @apply w-72 bg-indigo-700 shadow flex-col justify-between;
 }
 
 .sidebar-route {
-  @apply rounded-md flex w-full justify-between cursor-pointer items-center m-3 p-3;
+  @apply h-full text-white flex w-full justify-between cursor-pointer items-center p-3;
 }
