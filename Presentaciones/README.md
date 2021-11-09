@@ -19,4 +19,8 @@ Tengo 25 años, me gusta el voleibol, el futbol, los videojuegos, el marketing d
 Integrante: Cristian Camilo Sandoval Torres <br>
 Rol: Scrum Master <br>
 Datos Básicos: Soy estudiante del SENA en Implementación de Infraestructura de las TICS, Vivo en Ibagué - Tolima tengo 17 años, soy apasionado de la tecnología en general y espero poder ser desarrollador en el futuro
+
+Integrante: Juan Pablo Bedoya Sanchez <br>
+Rol: PO <br>
+Datos Básicos: Soy de Medellín, estudio en la UdeA ingeniería de sistemas. Tengo 28 años, me gustan los videojuegos, tocar guitarra y el futbol.
 # DeveApps
