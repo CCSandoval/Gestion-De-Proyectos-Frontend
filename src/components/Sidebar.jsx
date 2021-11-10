@@ -1,58 +1,60 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-const SidebarLinks = () => {
+const SidebarButtons = () => {
   return (
-    <ul className='mt-12'>
-      <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
-      <SidebarRoute to='/page2' title='Pagina2' icon='fas fa-smile-wink' />
-      <SidebarRoute to='/category1' title='Catego 1' icon='fab fa-amazon' />
-      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-car' />
-    </ul>
+    <div className="flex flex-col h-full">
+      <Logo />
+      <div className="flex flex-col h-full">
+        <SidebarRoute to="" title="PROYECTOS" icon="fas fa-project-diagram" />
+        <SidebarRoute to="/usuarios" title="USUARIOS" icon="far fa-id-card" />
+        <SidebarRoute
+          to="/mis-proyectos"
+          title="MIS PROYECTOS"
+          icon="fas fa-columns"
+        />
+        <SidebarRoute
+          to="/auth"
+          title="Log-In"
+          icon="fas fa-door-open"
+        />
+      </div>
+    </div>
   );
 };
 
 const Logo = () => {
   return (
-    <div className='py-3 w-full flex flex-col items-center justify-center'>
-      <img src='logo.png' alt='Logo' className='h-16' />
-      <span className='my-2 text-xl font-bold text-center'>Título de Mi Aplicación</span>
-    </div>
+    <button
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        alert("dialogo de perfil");
+      }}
+      className="py-2 px-1 w-full flex items-center justify-center bg-purple-800 hover:bg-purple-900 text-left"
+    >
+      <div>
+        <i className="far fa-user text-white text-8xl m-2"></i>
+      </div>
+      <div>
+        <span className="my-2 text-lg font-bold text-center text-white">
+          Nombre del usuario
+        </span>
+        <br />
+        <span className="my-2 text-base font-bold text-center text-white">
+          Rol
+        </span>
+      </div>
+    </button>
   );
 };
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
   return (
-    <div className='flex flex-col md:flex-row flex-no-wrap md:h-full'>
-      {/* Sidebar starts */}
-
-      <div className='sidebar hidden md:flex'>
-        <div className='px-8'>
-          <Logo />
-          <SidebarLinks />
-        </div>
-      </div>
-      <div className='flex md:hidden w-full justify-between bg-gray-800 p-2 text-white'>
-        <i className={`fas fa-${open ? 'times' : 'bars'}`} onClick={() => setOpen(!open)} />
-        <i className='fas fa-home' />
-      </div>
-      {open && <ResponsiveSidebar />}
-      {/* Sidebar ends */}
-    </div>
-  );
-};
-
-const ResponsiveSidebar = () => {
-  return (
-    <div>
-      <div
-        className='sidebar h-full z-40 absolute md:h-full sm:hidden transition duration-150 ease-in-out'
-        id='mobile-nav'
-      >
-        <div className='px-8'>
-          <Logo />
-          <SidebarLinks />
+    <div className="flex flex-col md:flex-row flex-no-wrap md:h-full">
+      <div className="sidebar hidden h-full md:flex">
+        <div className="h-full">
+          <SidebarButtons />
         </div>
       </div>
     </div>
@@ -61,21 +63,21 @@ const ResponsiveSidebar = () => {
 
 const SidebarRoute = ({ to, title, icon }) => {
   return (
-    <li>
+    <div className="h-full">
       <NavLink
         to={to}
         className={({ isActive }) =>
           isActive
-            ? 'sidebar-route text-white bg-indigo-700'
-            : 'sidebar-route text-gray-900 hover:text-white hover:bg-indigo-400'
+            ? "sidebar-route bg-indigo-800 hover:bg-indigo-900"
+            : "sidebar-route hover:bg-indigo-800"
         }
       >
-        <div className='flex items-center'>
-          <i className={icon} />
-          <span className='text-sm  ml-2'>{title}</span>
+        <div className="flex items-center justify-between">
+          <i className={`${icon} text-6xl`} />
+          <span className="text-2xl font-extrabold ml-3">{title}</span>
         </div>
       </NavLink>
-    </li>
+    </div>
   );
 };
 
