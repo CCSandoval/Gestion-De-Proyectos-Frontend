@@ -26,6 +26,7 @@ const SidebarButtons = () => {
 };
 
 const Logo = () => {
+  
   const [newProfile, setNewProfile]= useState(false);
   return (
     
