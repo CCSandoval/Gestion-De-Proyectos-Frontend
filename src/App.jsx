@@ -9,6 +9,7 @@ import Usuarios from "pages/Usuarios";
 import MisProyectos from "pages/MisProyectos";
 import Auth from "pages/Auth";
 import Avances from "pages/Avances";
+import NuevoProyecto from "pages/NuevoProyecto";
 // import PrivateRoute from 'components/PrivateRoute';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="/mis-proyectos" element={<MisProyectos />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/avances" element={<Avances />} />
+              <Route path="/nuevo-proyecto" element={<NuevoProyecto />} />
             </Route>
           </Routes>
         </BrowserRouter>
