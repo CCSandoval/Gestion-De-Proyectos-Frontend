@@ -1,12 +1,15 @@
 import React from "react";
-
+import CardUser from "components/CardUser";
 const Usuarios = () => {
   return (
-    <div>
-      <div className="bg-gray-200 h-96">USUARIOS</div>
-      <div className="bg-gray-200 h-96">USUARIOS</div>
-      <div className="bg-gray-200 h-96">USUARIOS</div>
-      <div className="bg-gray-200 h-96">USUARIOS</div>
+    <div className="flex flex-col justify-start items-center bg-gray-200">
+    <div className="w-full text-center border-black border-b-2">
+      <h1 className="text-6xl py-6">Usuarios</h1>
+      </div>
+    <CardUser/>
+    <CardUser/>
+    <CardUser/>
+    <CardUser/>
     </div>
   );
 };
