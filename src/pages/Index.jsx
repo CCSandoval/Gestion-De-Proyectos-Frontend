@@ -1,10 +1,12 @@
 import React from "react";
 import CardProyecto from "components/CardProyecto";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const Index = () => {
   return (
     <div className="flex flex-col justify-start items-center bg-gray-200">
+      <ToastContainer />
       <div className="w-full text-center border-black border-b-2">
         <h1 className="text-6xl py-6">PROYECTOS DE INVESTIGACIÓN</h1>
       </div>
