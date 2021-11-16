@@ -3,6 +3,7 @@ import PrivateLayout from "layouts/PrivateLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { UserContext } from "context/userContext";
+import "react-toastify/dist/ReactToastify.css";
 import "styles/globals.css";
 import Index from "pages/Index";
 import Usuarios from "pages/Usuarios";
