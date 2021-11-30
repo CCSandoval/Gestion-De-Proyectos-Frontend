@@ -3,7 +3,7 @@ import CardProyecto from "components/CardProyecto";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-const Index = () => {
+const Proyectos = () => {
   return (
     <div className="flex flex-col justify-start items-center bg-gray-200">
       <ToastContainer />
@@ -33,4 +33,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Proyectos;
