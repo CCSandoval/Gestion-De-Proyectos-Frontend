@@ -9,3 +9,11 @@
 .sidebar-route {
   @apply h-full text-white flex w-full justify-between cursor-pointer items-center p-3;
 }
+
+.registerInput {
+  @apply border-black border p-2 outline-none rounded-md my-2 w-full shadow-md
+}
+
+.registerLabel {
+  @apply flex flex-col w-full
+}
