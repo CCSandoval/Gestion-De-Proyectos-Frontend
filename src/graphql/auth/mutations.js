@@ -5,7 +5,7 @@ export const REGISTRO = gql`
     $correo: String!
     $nombres: String!
     $apellidos: String!
-    $rol: Enum_RolUsuario!
+    $rol: Enum_UserRol!
     $password: String!
     $identificacion: String!
   ) {
