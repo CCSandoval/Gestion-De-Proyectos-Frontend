@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Dialog } from "@material-ui/core";
 import { useAuth } from "context/authContext";
+import { useUser } from "context/userContext";
 
 const SidebarButtons = () => {
   return (
@@ -31,9 +32,9 @@ const SidebarButtons = () => {
 
 const Logo = () => {
   const [newProfile, setNewProfile] = useState(false);
+  const { userData } = useUser();
   return (
     <>
-      {" "}
       <button
         type="button"
         onClick={(e) => {
@@ -48,11 +49,11 @@ const Logo = () => {
         </div>
         <div>
           <span className="my-2 text-lg font-bold text-center text-white">
-            Nombre del usuario
+            {`${userData.nombres} ${userData.apellidos}`}
           </span>
           <br />
           <span className="my-2 text-base font-bold text-center text-white">
-            Rol
+            {userData.rol}
           </span>
         </div>
       </button>

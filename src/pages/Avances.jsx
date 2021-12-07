@@ -1,9 +1,13 @@
 import CardAvances from "components/CardAvances";
 import CardInvestigadores from "components/CardInvestigadores";
 import { nanoid } from "nanoid";
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useParams } from "react-router";
 const Avances = () => {
+  const { _id } = useParams();
+  useEffect(()=>{
+    //OBTENER TODOS LOS AVANCES
+  },[])
   return (
     <>
       <div className="flex w-full justify-center text-3xl bg-gray-200 p-2">
@@ -15,7 +19,7 @@ const Avances = () => {
             AVANCES
           </div>
           <div>
-            <div className='flex w-full justify-center m-5'>
+            <div className="flex w-full justify-center m-5">
               <button className=" w-auto bg-green-400 p-3 rounded-full hover:bg-green-500 shadow-md">
                 AÑADIR AVANCE
               </button>

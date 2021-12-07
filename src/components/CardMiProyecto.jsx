@@ -20,7 +20,6 @@ const CardProyecto = () => {
     );
     setGeneralObjectives(general);
     setSpecificObjectives(especific);
-    console.log("Especificos", especific, "\n", "Generales", general);
   }, []);
   return (
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
@@ -40,7 +39,7 @@ const CardProyecto = () => {
             <Link
               type="button"
               className="transform duration-300 bg-green-600 hover:bg-green-500 px-10 rounded-md text-white text-lg"
-              to="/avances"
+              to="/gpro/avances"
             >
               Ver Proyecto
             </Link>
@@ -61,17 +60,14 @@ const CardProyecto = () => {
             <i className="bi bi-list-task text-3xl"></i>Ver los objetivos
           </button>
 
-          <button
-            className="text-2xl hover:underline"
-            onClick={() => setIsActive(!isActive)}
-          >
+          <span className="text-2xl">
             {isActive ? "Activo" : "Inactivo"}
             <i
               className={`bi bi-bar-chart-fill ml-2 ${
                 isActive ? "text-green-700" : "text-red-700"
               }`}
             ></i>
-          </button>
+          </span>
         </div>
       </div>
       <Dialog

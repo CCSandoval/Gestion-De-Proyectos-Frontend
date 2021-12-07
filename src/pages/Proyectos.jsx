@@ -11,7 +11,7 @@ const Proyectos = () => {
         <h1 className="text-6xl py-6">PROYECTOS DE INVESTIGACIÓN</h1>
       </div>
       <Link
-        to="/nuevo-proyecto"
+        to="/gpro/nuevo-proyecto"
         className="border-2 border-black shadow-md flex items-center justify-center w-11/12 mt-10 rounded-lg p-3 transition duration-200 hover:bg-gray-300"
       >
         <i className="bi bi-clipboard-plus text-5xl px-1"></i>

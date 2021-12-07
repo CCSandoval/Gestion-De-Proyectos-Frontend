@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrivateLayout from "layouts/PrivateLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContext } from "context/userContext";
@@ -46,6 +46,10 @@ const client = new ApolloClient({
 function App() {
   const [userData, setUserData] = useState({});
   const [authToken, setAuthToken] = useState("");
+
+  useEffect(() => {
+    console.table(userData);
+  }, [userData]);
 
   //Funcion para guardar el token en el localStorage y setearlo en el estado de authToken
   const setToken = (token) => {

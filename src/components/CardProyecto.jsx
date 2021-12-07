@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import { objetivos } from "dummydb";
 import { toast } from "react-toastify";
+import { useUser } from "context/userContext";
 const date = new Date();
 const today = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
 const nextYear = `${date.getDay()}/${date.getMonth()}/${
@@ -10,6 +11,7 @@ const nextYear = `${date.getDay()}/${date.getMonth()}/${
 
 const CardProyecto = () => {
   const [isActive, setIsActive] = useState(false);
+  const { userData } = useUser();
 
   const [showObjectiveDialog, setShowObjectiveDialog] = useState(false);
   const [generalObjectives, setGeneralObjectives] = useState([]);
@@ -41,15 +43,19 @@ const CardProyecto = () => {
             <span className="text-lg">NOMBRE DEL PROYECTO</span>
           </div>
           <div className="w-full flex items-center justify-center">
-            <button
-              type="button"
-              className="transform duration-300 bg-green-600 hover:bg-green-500 px-10 rounded-md text-white text-lg"
-              onClick={() => {
-                setShowConfirmInscription(true);
-              }}
-            >
-              Quiero Inscribirme
-            </button>
+            {userData.rol === "ESTUDIANTE" ? (
+              <button
+                type="button"
+                className="transform duration-300 bg-green-600 hover:bg-green-500 px-10 rounded-md text-white text-lg"
+                onClick={() => {
+                  setShowConfirmInscription(true);
+                }}
+              >
+                Quiero Inscribirme
+              </button>
+            ) : (
+              <span className="transform duration-300 select-none bg-red-500 hover:bg-red-500 px-10 rounded-md text-white text-lg">No eres estudiante</span>
+            )}
           </div>
           <div className="flex flex-col items-end w-full">
             <span className="text-md">Lider</span>
@@ -66,20 +72,31 @@ const CardProyecto = () => {
           >
             <i className="bi bi-list-task text-3xl"></i>Ver los objetivos
           </button>
-          <button
-            type="button"
-            className="text-2xl hover:underline"
-            onClick={() => {
-              setIsActive(!isActive);
-            }}
-          >
-            {isActive ? "Activo" : "Inactivo"}
-            <i
-              className={`bi bi-bar-chart-fill ml-2 ${
-                isActive ? "text-green-700" : "text-red-700"
-              }`}
-            ></i>
-          </button>
+          {userData.rol !== "ADMINISTRADOR" ? (
+            <span className="text-2xl">
+              {isActive ? "Activo" : "Inactivo"}
+              <i
+                className={`bi bi-bar-chart-fill ml-2 ${
+                  isActive ? "text-green-700" : "text-red-700"
+                }`}
+              ></i>
+            </span>
+          ) : (
+            <button
+              type="button"
+              className="text-2xl hover:underline"
+              onClick={() => {
+                setIsActive(!isActive);
+              }}
+            >
+              {isActive ? "Activo" : "Inactivo"}
+              <i
+                className={`bi bi-bar-chart-fill ml-2 ${
+                  isActive ? "text-green-700" : "text-red-700"
+                }`}
+              ></i>
+            </button>
+          )}
         </div>
       </div>
       <button
