@@ -36,18 +36,6 @@ const MisProyectos = () => {
       <div className="w-full text-center border-black border-b-2">
         <h1 className="text-6xl py-6">MIS PROYECTOS</h1>
       </div>
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
-      <CardMiProyecto />
     </div>
   );
 };

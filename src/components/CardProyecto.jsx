@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
-import { objetivos } from "dummydb";
 import { toast } from "react-toastify";
 import { useUser } from "context/userContext";
-const date = new Date();
-const today = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-const nextYear = `${date.getDay()}/${date.getMonth()}/${
-  date.getFullYear() + 1
-}`;
 
-const CardProyecto = () => {
+const CardProyecto = ({
+  _id,
+  nombre,
+  lider,
+  estado,
+  fase,
+  presupuesto,
+  inicio,
+  terminacion,
+  objetivos,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const { userData } = useUser();
 
@@ -17,14 +21,16 @@ const CardProyecto = () => {
   const [generalObjectives, setGeneralObjectives] = useState([]);
   const [specificObjectives, setSpecificObjectives] = useState([]);
   useEffect(() => {
-    const general = objetivos.filter((objetivo) => objetivo.tipo === "general");
+    if (estado === "ACTIVO") {
+      setIsActive(true);
+    }
+    const general = objetivos.filter((objetivo) => objetivo.tipo === "GENERAL");
     const especific = objetivos.filter(
-      (objetivo) => objetivo.tipo === "especifico"
+      (objetivo) => objetivo.tipo === "ESPECIFICO"
     );
     setGeneralObjectives(general);
     setSpecificObjectives(especific);
-    console.log("Especificos", especific, "\n", "Generales", general);
-  }, []);
+  }, [estado, objetivos]);
 
   const [showConfirmInscription, setShowConfirmInscription] = useState(false);
 
@@ -32,15 +38,15 @@ const CardProyecto = () => {
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
       <div className="h-full w-full">
         <div className="w-full flex justify-around">
-          <p className="text-sm">Inicio: {today}</p>
-          <p className="text-sm">Presupuesto: $9'999'999</p>
-          <p className="text-sm">Fase: Desarrollo</p>
-          <p className="text-sm">Terminacion: {nextYear}</p>
+          <p className="text-sm">Inicio: {inicio}</p>
+          <p className="text-sm">Presupuesto: {presupuesto}</p>
+          <p className="text-sm">Fase: {fase}</p>
+          <p className="text-sm">Terminacion: {terminacion}</p>
         </div>
         <div className="flex mt-2">
           <div className="flex flex-col w-full">
-            <span className="text-md">ID DEL PROYECTO</span>
-            <span className="text-lg">NOMBRE DEL PROYECTO</span>
+            <span className="text-md">{_id}</span>
+            <span className="text-lg">{nombre}</span>
           </div>
           <div className="w-full flex items-center justify-center">
             {userData.rol === "ESTUDIANTE" ? (
@@ -54,12 +60,14 @@ const CardProyecto = () => {
                 Quiero Inscribirme
               </button>
             ) : (
-              <span className="transform duration-300 select-none bg-red-500 hover:bg-red-500 px-10 rounded-md text-white text-lg">No eres estudiante</span>
+              <span className="transform duration-300 select-none bg-red-500 hover:bg-red-500 px-10 rounded-md text-white text-lg">
+                No eres estudiante
+              </span>
             )}
           </div>
           <div className="flex flex-col items-end w-full">
             <span className="text-md">Lider</span>
-            <span className="text-lg">NOMBRE DEL LIDER</span>
+            <span className="text-lg">{lider}</span>
           </div>
         </div>
         <div className="w-full flex justify-around px-3">
