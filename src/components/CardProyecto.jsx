@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import { toast } from "react-toastify";
 import { useUser } from "context/userContext";
+import { useMutation } from "@apollo/client";
+import { CREAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+import ReactLoading from "react-loading";
 
 const CardProyecto = ({
   _id,
@@ -16,10 +19,35 @@ const CardProyecto = ({
 }) => {
   const [isActive, setIsActive] = useState(false);
   const { userData } = useUser();
-
   const [showObjectiveDialog, setShowObjectiveDialog] = useState(false);
   const [generalObjectives, setGeneralObjectives] = useState([]);
   const [specificObjectives, setSpecificObjectives] = useState([]);
+  const [showConfirmInscription, setShowConfirmInscription] = useState(false);
+
+  const [
+    nuevaInscripcion,
+    {
+      data: inscripcionData,
+      loading: inscripcionLoading,
+      error: inscripcionError,
+    },
+  ] = useMutation(CREAR_INSCRIPCION);
+
+  const crearInscripcion = (e) => {
+    e.preventDefault();
+    nuevaInscripcion({
+      variables: { proyecto: _id, estudiante: userData._id },
+    })
+      .then((s) => {
+        console.log(s);
+        toast.success("Inscripcion enviada");
+      })
+      .catch((e) => {
+        if (e) toast.error("Erorr enviando al inscripcion");
+      });
+    setShowConfirmInscription(false);
+  };
+
   useEffect(() => {
     if (estado === "ACTIVO") {
       setIsActive(true);
@@ -31,8 +59,6 @@ const CardProyecto = ({
     setGeneralObjectives(general);
     setSpecificObjectives(especific);
   }, [estado, objetivos]);
-
-  const [showConfirmInscription, setShowConfirmInscription] = useState(false);
 
   return (
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
@@ -106,15 +132,15 @@ const CardProyecto = ({
             </button>
           )}
         </div>
-      <button
-        type="button"
-        className="text-2xl absolute bottom-1 right-2"
-        onClick={() => {
-          alert("Falta por hacer esto");
-        }}
-      >
-        <i className="bi bi-pencil-square"></i>
-      </button>
+        <button
+          type="button"
+          className="text-2xl absolute bottom-1 right-2"
+          onClick={() => {
+            alert("Falta por hacer esto");
+          }}
+        >
+          <i className="bi bi-pencil-square"></i>
+        </button>
       </div>
       <Dialog
         open={showObjectiveDialog}
@@ -138,7 +164,7 @@ const CardProyecto = ({
               <ul className="max-h-96 overflow-y-scroll">
                 {generalObjectives.map((objective) => {
                   return (
-                    <li className="mb-2 hover:bg-gray-200">
+                    <li key={objective._id} className="mb-2 hover:bg-gray-200">
                       {objective.descripcion}
                     </li>
                   );
@@ -150,7 +176,7 @@ const CardProyecto = ({
               <ul className="max-h-96 overflow-y-scroll">
                 {specificObjectives.map((objective) => {
                   return (
-                    <li className="mb-2 hover:bg-gray-200">
+                    <li key={objective._id} className="mb-2 hover:bg-gray-200">
                       {objective.descripcion}
                     </li>
                   );
@@ -170,17 +196,17 @@ const CardProyecto = ({
           </h1>
           <div className="flex justify-around my-3">
             <button
-              onClick={() => {
-                setShowConfirmInscription(false);
-                toast.success("Inscripcion confirmada", {
-                  position: "top-right",
-                  autoClose: 2000,
-                });
-              }}
+              onClick={crearInscripcion}
               className="flex items-center transform duration-300 bg-green-500 hover:bg-green-400 rounded-md px-9 py-3"
             >
-              <i className="far fa-check-circle text-black text-2xl mr-3" />
-              <p className="text-white font-bold text-xl">Si</p>
+              {inscripcionLoading ? (
+                <ReactLoading type="spin" height={30} width={30} />
+              ) : (
+                <>
+                  <i className="far fa-check-circle text-black text-2xl mr-3" />
+                  <p className="text-white font-bold text-xl">Si</p>
+                </>
+              )}
             </button>
             <button
               onClick={() => {
