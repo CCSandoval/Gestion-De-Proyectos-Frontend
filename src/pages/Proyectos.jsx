@@ -40,6 +40,7 @@ const Proyectos = () => {
       {proyectosData.Proyectos.map((p) => {
         return (
           <CardProyecto
+            key={p._id}
             _id={p._id}
             nombre={p.nombre}
             lider={`${p.lider.nombres} ${p.lider.apellidos}`}

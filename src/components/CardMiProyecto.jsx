@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
-import { objetivos } from "dummydb";
-const date = new Date();
-const today = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-const nextYear = `${date.getDay()}/${date.getMonth()}/${
-  date.getFullYear() + 1
-}`;
 
-const CardProyecto = () => {
+const CardMiProyecto = ({
+  _id,
+  nombre,
+  lider,
+  estado,
+  fase,
+  presupuesto,
+  inicio,
+  terminacion,
+  objetivos,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [showObjectiveDialog, setShowObjectiveDialog] = useState(false);
   const [generalObjectives, setGeneralObjectives] = useState([]);
   const [specificObjectives, setSpecificObjectives] = useState([]);
   useEffect(() => {
-    const general = objetivos.filter((objetivo) => objetivo.tipo === "general");
+    if (estado === "ACTIVO") {
+      setIsActive(true);
+    }
+    const general = objetivos.filter((objetivo) => objetivo.tipo === "GENERAL");
     const especific = objetivos.filter(
-      (objetivo) => objetivo.tipo === "especifico"
+      (objetivo) => objetivo.tipo === "ESPECIFICO"
     );
     setGeneralObjectives(general);
     setSpecificObjectives(especific);
-  }, []);
+  }, [estado, objetivos]);
   return (
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
       <div className="h-full w-full">
         <div className="w-full flex justify-around">
-          <p className="text-sm">Inicio: {today}</p>
-          <p className="text-sm">Presupuesto: $9'999'999</p>
-          <p className="text-sm">Fase: Desarrollo</p>
-          <p className="text-sm">Terminacion: {nextYear}</p>
+          <p className="text-sm">Inicio: {inicio}</p>
+          <p className="text-sm">Presupuesto: {presupuesto}</p>
+          <p className="text-sm">Fase: {fase}</p>
+          <p className="text-sm">Terminacion: {terminacion}</p>
         </div>
         <div className="flex mt-2">
           <div className="flex flex-col w-full">
-            <span className="text-md">ID DEL PROYECTO</span>
-            <span className="text-lg">NOMBRE DEL PROYECTO</span>
+            <span className="text-md">{_id}</span>
+            <span className="text-lg">{nombre}</span>
           </div>
           <div className="w-full flex items-center justify-center">
             <Link
@@ -46,7 +53,7 @@ const CardProyecto = () => {
           </div>
           <div className="flex flex-col items-end w-full">
             <span className="text-md">Lider</span>
-            <span className="text-lg">NOMBRE DEL LIDER</span>
+            <span className="text-lg">{lider}</span>
           </div>
         </div>
         <div className="w-full flex justify-around px-3">
@@ -59,7 +66,6 @@ const CardProyecto = () => {
           >
             <i className="bi bi-list-task text-3xl"></i>Ver los objetivos
           </button>
-
           <span className="text-2xl">
             {isActive ? "Activo" : "Inactivo"}
             <i
@@ -84,7 +90,7 @@ const CardProyecto = () => {
         </button>
         <div className="flex flex-col p-3">
           <h1 className="text-center font-extrabold text-xl mb-2">
-            Objetivos de [Nombre del proyecto]
+            Objetivos de {nombre}
           </h1>
           <div className="flex justify-around">
             <div className="w-1/2 flex flex-col max-h-5/6 mr-1 rounded-sm border border-black py-1 px-2">
@@ -118,4 +124,4 @@ const CardProyecto = () => {
   );
 };
 
-export default CardProyecto;
+export default CardMiProyecto;

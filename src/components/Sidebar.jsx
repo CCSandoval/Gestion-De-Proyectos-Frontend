@@ -5,6 +5,7 @@ import { useAuth } from "context/authContext";
 import { useUser } from "context/userContext";
 
 const SidebarButtons = () => {
+  const { userData } = useUser();
   return (
     <div className="flex flex-col h-full">
       <Logo />
@@ -19,11 +20,19 @@ const SidebarButtons = () => {
           title="USUARIOS"
           icon="far fa-id-card"
         />
-        <SidebarRoute
-          to="/gpro/mis-proyectos"
-          title="MIS PROYECTOS"
-          icon="fas fa-columns"
-        />
+        {userData.rol === "LIDER" ? (
+          <SidebarRoute
+            to="/gpro/proyectos-liderados"
+            title="PROYECTOS LIDERADOS"
+            icon="fas fa-columns"
+          />
+        ) : (
+          <SidebarRoute
+            to="/gpro/mis-proyectos"
+            title="MIS PROYECTOS"
+            icon="fas fa-columns"
+          />
+        )}
         <Logout to="/" title="Cerrar Sesión" icon="fas fa-door-open" />
       </div>
     </div>

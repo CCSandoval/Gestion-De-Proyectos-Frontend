@@ -106,7 +106,6 @@ const CardProyecto = ({
             </button>
           )}
         </div>
-      </div>
       <button
         type="button"
         className="text-2xl absolute bottom-1 right-2"
@@ -116,6 +115,7 @@ const CardProyecto = ({
       >
         <i className="bi bi-pencil-square"></i>
       </button>
+      </div>
       <Dialog
         open={showObjectiveDialog}
         onBackdropClick={() => setShowObjectiveDialog(false)}

@@ -15,6 +15,7 @@ import { AuthContext } from "context/authContext";
 import Proyectos from "pages/Proyectos";
 import Usuarios from "pages/Usuarios";
 import MisProyectos from "pages/MisProyectos";
+import ProyectosLiderados from "pages/ProyectosLiderados";
 import Avances from "pages/Avances";
 import NuevoProyecto from "pages/NuevoProyecto";
 import AuthLayout from "layouts/AuthLayout";
@@ -47,10 +48,6 @@ function App() {
   const [userData, setUserData] = useState({});
   const [authToken, setAuthToken] = useState("");
 
-  useEffect(() => {
-    console.table(userData);
-  }, [userData]);
-
   //Funcion para guardar el token en el localStorage y setearlo en el estado de authToken
   const setToken = (token) => {
     setAuthToken(token);
@@ -71,6 +68,7 @@ function App() {
                 <Route path="proyectos" element={<Proyectos />} />
                 <Route path="usuarios" element={<Usuarios />} />
                 <Route path="mis-proyectos" element={<MisProyectos />} />
+                <Route path="proyectos-liderados" element={<ProyectosLiderados />} />
                 <Route path="avances" element={<Avances />} />
                 <Route path="nuevo-proyecto" element={<NuevoProyecto />} />
               </Route>
