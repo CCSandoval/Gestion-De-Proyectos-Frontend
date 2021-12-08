@@ -1,13 +1,12 @@
+import React from "react";
 import CardMiProyecto from "components/CardMiProyecto";
 import { useUser } from "context/userContext";
-import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import warning from "img/warning.png";
 import { useQuery } from "@apollo/client";
 import { GET_PROYECTOS_LIDER } from "graphql/proyectos/querys";
 import { toast } from "react-toastify";
 import Loading from "components/Loading";
-import CardProyecto from "components/CardProyecto";
 const ProyectosLiderados = () => {
   const navigate = useNavigate();
   const { userData } = useUser();

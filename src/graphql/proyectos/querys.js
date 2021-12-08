@@ -43,3 +43,25 @@ export const GET_PROYECTOS_LIDER = gql`
     }
   }
 `;
+
+export const GET_PROYECTOS_ESTUDIANTE = gql`
+  query ProyectosPorUsuario($id: String!) {
+    proyectosPorUsuario(_id: $id) {
+      _id
+      nombre
+      presupuesto
+      fechaInicio
+      fechaFin
+      estado
+      fase
+      lider {
+        nombres
+        apellidos
+      }
+      objetivos {
+        descripcion
+        tipo
+      }
+    }
+  }
+`;
