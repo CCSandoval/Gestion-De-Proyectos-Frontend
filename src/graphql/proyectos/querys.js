@@ -22,6 +22,4 @@ export const GET_PROYECTOS = gql`
   }
 `;
 
-export const GET_PROYECTOS_ESTUDIANTE = gql``;
-
 export const GET_PROYECTOS_LIDER = gql``;
