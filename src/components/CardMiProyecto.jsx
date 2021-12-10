@@ -92,7 +92,7 @@ const CardMiProyecto = ({
       )}
       <div className="h-full w-full">
         <div className="w-full flex justify-around">
-          <p className="text-sm">Inicio: {inicio}</p>
+          <p className="text-sm">Inicio: {inicio ? inicio.toString().split("T")[0] : "No ha iniciado"}</p>
           {editing ? (
             <input
               onChange={(e) => {
@@ -107,7 +107,7 @@ const CardMiProyecto = ({
             <p className="text-sm">Presupuesto: {presupuestoProyecto}</p>
           )}
           <p className="text-sm">Fase: {fase}</p>
-          <p className="text-sm">Terminacion: {terminacion}</p>
+          <p className="text-sm">Terminacion: {terminacion ? terminacion.toString().split("T")[0] : "No ha terminado"}</p>
         </div>
         <div className="flex mt-2">
           <div className="flex flex-col w-full">
@@ -130,7 +130,7 @@ const CardMiProyecto = ({
             <Link
               type="button"
               className="transform duration-300 bg-green-600 hover:bg-green-500 px-10 rounded-md text-white text-lg"
-              to="/gpro/avances"
+              to={`/gpro/avances/${_id}`}
             >
               Ver Proyecto
             </Link>
