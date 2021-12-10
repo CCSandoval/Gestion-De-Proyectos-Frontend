@@ -39,6 +39,18 @@ export const GET_PROYECTO = gql`
         descripcion
         tipo
       }
+      usuarios {
+        nombres
+        apellidos
+      }
+      inscripciones {
+        estado
+        estudiante {
+          nombres
+          apellidos
+        }
+        fechaInscripcion
+      }
     }
   }
 `;

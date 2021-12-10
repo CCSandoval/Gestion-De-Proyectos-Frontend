@@ -1,6 +1,7 @@
+import { Dialog } from "@material-ui/core";
 import CardAvances from "components/CardAvances";
 import CardInvestigadores from "components/CardInvestigadores";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { useQuery } from "@apollo/client";
@@ -10,6 +11,7 @@ import { GET_PROYECTO } from "graphql/proyectos/querys";
 
 const Avances = () => {
   const { _id } = useParams();
+  const [inscription, setInscription] = useState(false);
 
   const {
     data: proyectoData,
@@ -60,7 +62,56 @@ const Avances = () => {
           <div className="flex w-full justify-center p-1 text-xl m-5">
             INVESTIGADORES
           </div>
-          <CardInvestigadores />
+          <div className="w-full flex flex-col justify-center items-center">
+            <div className="flex w-full justify-center">
+              <button
+                onClick={() => {
+                  setInscription(!inscription);
+                }}
+                className="w-auto bg-green-400 p-3 m-5 rounded-full hover:bg-green-500 shadow-md"
+              >
+                VER INSCRIPCIONES
+              </button>
+            </div>
+            <Dialog open={inscription}>
+              <div className="flex flex-col p-1 bg-blue-50">
+                <i
+                  onClick={() => {
+                    setInscription(false);
+                  }}
+                  className="flex justify-end p-1 bi bi-x-circle cursor-pointer text-xl"
+                ></i>
+
+                <h2 className="flex justify-center m-3">
+                  Inscripciones a {proyectoData.Proyecto.nombre}
+                </h2>
+                <div className="flex flex-col justify-between items-center m-3 border-2 border-gray-300">
+                  {proyectoData.Proyecto.inscripciones.map((i) => {
+                    if (i.estado !== "ACEPTADA") {
+                      return (
+                        <div className="m-3 w-full flex justify-around">
+                          <span>{`${i.estudiante.nombres} ${i.estudiante.apellidos}`}</span>
+                          <div>
+                            <button>
+                              <i className="bi bi-check-circle-fill text-green-500 text-3xl mx-1"></i>
+                            </button>
+                            <button>
+                              <i className="bi bi-x-circle-fill text-red-500 text-3xl"></i>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+            </Dialog>
+          </div>
+          {proyectoData.Proyecto.usuarios.map((u) => {
+            return (
+              <CardInvestigadores apellidos={u.apellidos} nombres={u.nombres} />
+            );
+          })}
         </div>
       </div>
     </>
