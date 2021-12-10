@@ -2,25 +2,59 @@ import { CREAR_PROYECTO } from 'graphql/proyectos/mutations';
 import { useMutation } from '@apollo/client';
 import useFormData from 'hooks/useFormData';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { useUser } from 'context/userContext';
 
 
 
 const NuevoProyecto = () => {
+
   const {userData} =  useUser();
   const { form, formData, updateFormData } = useFormData(null);
 
   const [crearProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(CREAR_PROYECTO);
+
+  const [objetivoGeneral , setobjetivoGeneral] = useState("");
+  const [objetivoEspecifico , setobjetivoEspecifico] = useState("");
+  const [objectivosGenerales , setObjetivosGenerales] = useState([]);
+  const [objectivosEspecificos , setObjetivosEspecificos] = useState([]);
+
+  
 
   const submitForm = (e) => {
     e.preventDefault();
 
     delete formData.presupuesto;
     crearProyecto({
-      variables: { ...formData, presupuesto: presupuesto, lider: userData._id },
+      variables: { ...formData, presupuesto: presupuesto, lider: userData._id, generales: objectivosGenerales, especificos: objectivosEspecificos },
     })
   };
+
+  // useEffect(()=>{
+  //   console.log(objectivosEspecificos.length)
+  //   for (var i =0; i< objectivosEspecificos.length; i++){
+  //     crearObjetivo({
+  //       variables:{
+  //         descripcion: objectivosEspecificos[i],
+  //         tipo: "ESPECIFICO",
+  //         proyecto: mutationData.crearProyecto._id,
+  //       }          
+  //     })
+  //   } 
+  //   for (var i =0; i< objectivosGenerales.length; i++){
+  //     crearObjetivo({
+  //       variables:{
+  //         descripcion: objectivosGenerales[i],
+  //         tipo: "GENERAL",
+  //         proyecto: mutationData.crearProyecto._id,
+  //       }          
+  //     })
+  //   } 
+  // },[proyectoCreado]);
+
+    
+  
 
   const [presupuesto, setPresupuesto] = useState(0);
 
@@ -36,10 +70,7 @@ const NuevoProyecto = () => {
     }
   }, [mutationError]);
 
-  const [objetivoGeneral , setobjetivoGeneral] = useState("");
-  const [objetivoEspecifico , setobjetivoEspecifico] = useState("");
-  const [objectivosGenerales , setObjetivosGenerales] = useState([]);
-  const [objectivosEspecificos , setObjetivosEspecificos] = useState([]);
+
 
     return (
         <div className="block text-center">
@@ -78,9 +109,7 @@ const NuevoProyecto = () => {
               <ul name="comment" className="border border-gray-500 mt-2 pl-8 pb-12 m-10"  name="ObjetivosEspecificos" >
               {objectivosEspecificos.map((e)=>{return <li>{e}</li>})}
               </ul> 
-
             </div>
-
           </div>
 
 
