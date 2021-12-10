@@ -95,10 +95,10 @@ const CardProyecto = ({
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
       <div className="h-full w-full">
         <div className="w-full flex justify-around">
-          <p className="text-sm">Inicio: {inicio}</p>
+          <p className="text-sm">Inicio: {inicio ? inicio.toString().split("T")[0] : "No ha iniciado"}</p>
           <p className="text-sm">Presupuesto: {presupuesto}</p>
           <p className="text-sm">Fase: {fase}</p>
-          <p className="text-sm">Terminacion: {terminacion}</p>
+          <p className="text-sm">Terminacion: {terminacion ? terminacion.toString().split("T")[0] : "No ha terminado"}</p>
         </div>
         <div className="flex mt-2">
           <div className="flex flex-col w-full">

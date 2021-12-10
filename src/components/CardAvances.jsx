@@ -33,7 +33,7 @@ const CardAvances = ({ id, fecha, ob, icono }) => {
     <div className="flex flex-col p-2 border-2 border-gray-500 m-5 rounded-lg">
       <div className="flex w-full justify-between p-2">
         <span>{`Id del avance: ${id}`}</span>
-        <span>{`Fecha ${fecha}`}</span>
+        <span>{`Fecha ${fecha.toString().split("T")[0]}`}</span>
       </div>
       <div className="flex w-full justify-around">
         {isediting ? (

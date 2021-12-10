@@ -7,10 +7,6 @@ query AvancesPorProyecto($id: String!) {
     fecha
     descripcion
     observaciones
-    proyecto {
-      _id
-      nombre
-    }
     creadoPor {
       _id
       nombres

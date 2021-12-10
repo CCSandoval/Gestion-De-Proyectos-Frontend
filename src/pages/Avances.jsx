@@ -1,26 +1,29 @@
 import CardAvances from "components/CardAvances";
 import CardInvestigadores from "components/CardInvestigadores";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useQuery } from "@apollo/client";
 import { GET_AVANCES } from "graphql/avances/querys";
 import Loading from "components/Loading";
+import { GET_PROYECTO } from "graphql/proyectos/querys";
 
 const Avances = () => {
   const { _id } = useParams();
 
   const {
+    data: proyectoData,
+    error: proyectoError,
+    loading: proyectoLoading,
+  } = useQuery(GET_PROYECTO, { variables: { id: _id } });
+
+  const {
     data: avancesData,
     error: avancesError,
     loading: avancesLoading,
-  } = useQuery(GET_AVANCES, { variables: { _id } });
+  } = useQuery(GET_AVANCES, { variables: { id: _id } });
 
-  useEffect(()=>{
-    console.log(avancesData)
-  },[avancesData] )
-
-  if (avancesLoading) {
+  if (avancesLoading || proyectoLoading) {
     return (
       <div className="flex flex-col h-screen">
         <Loading />
@@ -28,10 +31,14 @@ const Avances = () => {
     );
   }
 
+  if (avancesError || proyectoError) {
+    toast.error("Hubo un error");
+  }
+
   return (
     <>
       <div className="flex w-full justify-center text-3xl bg-gray-200 p-2">
-        {avancesData.proyecto.nombre}
+        {proyectoData.Proyecto.nombre}
       </div>
       <div className="flex w-full justify-around">
         <div className="flex flex-col p-5 w-4/5 h-screen bg-gray-200 border-t-2 border-gray-600">
@@ -44,12 +51,9 @@ const Avances = () => {
                 AÑADIR AVANCE
               </button>
             </div>
-            {avancesData.map((p)=>{
-              return(
-                <CardAvances fecha={p.fecha} id={p._id} key={p._id}/>)
+            {avancesData.avancesPorProyecto.map((p) => {
+              return <CardAvances fecha={p.fecha} id={p._id} key={p._id} />;
             })}
-            {/* <CardAvances icono="plus-circle" fecha="DD/MM/YYYY" id="111" />
-            <CardAvances icono="info-circle" fecha="DD/MM/YYYY" id="123" /> */}
           </div>
         </div>
         <div className="flex flex-col items-center p-5 w-2/5 bg-gray-200 border-t-2 border-l-2 border-gray-600">
