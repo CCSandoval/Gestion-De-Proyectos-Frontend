@@ -49,7 +49,7 @@ const MisProyectos = () => {
   }
 
   return (
-    <div className="flex flex-col justify-start items-center bg-gray-200">
+    <div className="flex flex-col justify-start items-center">
       <div className="w-full text-center border-black border-b-2">
         <h1 className="text-6xl py-6">MIS PROYECTOS</h1>
       </div>

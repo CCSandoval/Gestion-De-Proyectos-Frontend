@@ -67,7 +67,7 @@ const PrivateLayout = () => {
       {userData.estado !== "PENDIENTE" ? (
         <div className="flex w-full h-full">
           <Sidebar />
-          <div className="w-full h-full overflow-y-scroll">
+          <div className="w-full h-full overflow-y-scroll bg-gray-200">
             <Outlet />
           </div>
         </div>

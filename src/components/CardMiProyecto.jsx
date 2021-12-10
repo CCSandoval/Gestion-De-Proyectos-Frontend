@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
+import { useMutation } from "@apollo/client";
+import { EDITAR_PROYECTO } from "graphql/proyectos/mutations";
+import { toast } from "react-toastify";
 
 const CardMiProyecto = ({
   _id,
@@ -13,10 +16,31 @@ const CardMiProyecto = ({
   terminacion,
   objetivos,
 }) => {
+  const [nombreProyecto, setNombreProyecto] = useState(nombre);
+  const [editing, setEditing] = useState(false);
+  const [presupuestoProyecto, setPresupuestoProyecto] = useState(presupuesto);
   const [isActive, setIsActive] = useState(false);
   const [showObjectiveDialog, setShowObjectiveDialog] = useState(false);
   const [generalObjectives, setGeneralObjectives] = useState([]);
   const [specificObjectives, setSpecificObjectives] = useState([]);
+
+  const [
+    editProject,
+    { data: editData, loading: editLoading, error: editError },
+  ] = useMutation(EDITAR_PROYECTO);
+
+  const editarProyecto = (e) => {
+    editProject({
+      variables: {
+        id: _id,
+        nombre: nombreProyecto,
+        presupuesto: parseFloat(presupuestoProyecto),
+      },
+    })
+      .then((s) => toast.success("Proyecto editado"))
+      .catch((e) => toast.error("Error editando el proyecto"));
+  };
+
   useEffect(() => {
     if (estado === "ACTIVO") {
       setIsActive(true);
@@ -28,19 +52,79 @@ const CardMiProyecto = ({
     setGeneralObjectives(general);
     setSpecificObjectives(especific);
   }, [estado, objetivos]);
+
   return (
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
+      {!editing ? (
+        <button
+          type="button"
+          className="text-2xl absolute bottom-1 right-2"
+          onClick={() => {
+            setEditing(true);
+          }}
+        >
+          <i className="bi bi-pencil-square"></i>
+        </button>
+      ) : (
+        <>
+          <button
+            type="button"
+            className="text-2xl absolute bottom-1 right-10"
+            onClick={() => {
+              editarProyecto();
+              setEditing(false);
+            }}
+          >
+            <i className="bi bi-check-circle-fill text-green-600"></i>
+          </button>
+          <button
+            type="button"
+            className="text-2xl absolute bottom-1 right-2"
+            onClick={() => {
+              setEditing(false);
+              setNombreProyecto(nombre);
+              setPresupuestoProyecto(presupuesto);
+            }}
+          >
+            <i className="bi bi-x-circle-fill text-red-600"></i>
+          </button>
+        </>
+      )}
       <div className="h-full w-full">
         <div className="w-full flex justify-around">
           <p className="text-sm">Inicio: {inicio}</p>
-          <p className="text-sm">Presupuesto: {presupuesto}</p>
+          {editing ? (
+            <input
+              onChange={(e) => {
+                setPresupuestoProyecto(e.target.value);
+              }}
+              value={presupuestoProyecto}
+              type="number"
+              name="proyecto"
+              id="proyecto"
+            />
+          ) : (
+            <p className="text-sm">Presupuesto: {presupuestoProyecto}</p>
+          )}
           <p className="text-sm">Fase: {fase}</p>
           <p className="text-sm">Terminacion: {terminacion}</p>
         </div>
         <div className="flex mt-2">
           <div className="flex flex-col w-full">
             <span className="text-md">{_id}</span>
-            <span className="text-lg">{nombre}</span>
+            {editing ? (
+              <input
+                onChange={(e) => {
+                  setNombreProyecto(e.target.value);
+                }}
+                value={nombreProyecto}
+                type="text"
+                name="nombre"
+                id="nombre"
+              />
+            ) : (
+              <span className="text-lg">{nombreProyecto}</span>
+            )}
           </div>
           <div className="w-full flex items-center justify-center">
             <Link

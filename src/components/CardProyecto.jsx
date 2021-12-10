@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { useUser } from "context/userContext";
 import { useMutation } from "@apollo/client";
 import { CREAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+import { ACTIVAR_PROYECTO } from "graphql/proyectos/mutations";
+import { DESACTIVAR_PROYECTO } from "graphql/proyectos/mutations";
 import ReactLoading from "react-loading";
 
 const CardProyecto = ({
@@ -23,6 +25,18 @@ const CardProyecto = ({
   const [generalObjectives, setGeneralObjectives] = useState([]);
   const [specificObjectives, setSpecificObjectives] = useState([]);
   const [showConfirmInscription, setShowConfirmInscription] = useState(false);
+
+  useEffect(() => {
+    if (estado === "ACTIVO") {
+      setIsActive(true);
+    }
+    const general = objetivos.filter((objetivo) => objetivo.tipo === "GENERAL");
+    const especific = objetivos.filter(
+      (objetivo) => objetivo.tipo === "ESPECIFICO"
+    );
+    setGeneralObjectives(general);
+    setSpecificObjectives(especific);
+  }, [estado, objetivos]);
 
   const [
     nuevaInscripcion,
@@ -48,17 +62,34 @@ const CardProyecto = ({
     setShowConfirmInscription(false);
   };
 
-  useEffect(() => {
-    if (estado === "ACTIVO") {
-      setIsActive(true);
-    }
-    const general = objetivos.filter((objetivo) => objetivo.tipo === "GENERAL");
-    const especific = objetivos.filter(
-      (objetivo) => objetivo.tipo === "ESPECIFICO"
-    );
-    setGeneralObjectives(general);
-    setSpecificObjectives(especific);
-  }, [estado, objetivos]);
+  const [
+    activateProject,
+    { data: activateData, loading: activateLoading, error: activateError },
+  ] = useMutation(ACTIVAR_PROYECTO);
+  const [
+    deactivateProject,
+    { data: deactivateData, loading: deactivateLoader, error: deactivateError },
+  ] = useMutation(DESACTIVAR_PROYECTO);
+
+  const activarProyecto = (e) => {
+    e.preventDefault();
+    activateProject({ variables: { id: _id } })
+      .then((s) => {
+        toast.success("Proyecto activado");
+        setIsActive(true);
+      })
+      .catch((e) => toast.error("Error activando"));
+  };
+
+  const desactivarProyecto = (e) => {
+    e.preventDefault();
+    deactivateProject({ variables: { id: _id } })
+      .then((s) => {
+        toast.success("Proyecto desactivado");
+        setIsActive(false);
+      })
+      .catch((e) => toast.error("Error desactivando"));
+  };
 
   return (
     <div className="border-2 border-black shadow-md flex w-11/12 mt-10 rounded-lg p-3 relative">
@@ -119,8 +150,8 @@ const CardProyecto = ({
             <button
               type="button"
               className="text-2xl hover:underline"
-              onClick={() => {
-                setIsActive(!isActive);
+              onClick={(e) => {
+                isActive ? desactivarProyecto(e) : activarProyecto(e);
               }}
             >
               {isActive ? "Activo" : "Inactivo"}
@@ -132,15 +163,6 @@ const CardProyecto = ({
             </button>
           )}
         </div>
-        <button
-          type="button"
-          className="text-2xl absolute bottom-1 right-2"
-          onClick={() => {
-            alert("Falta por hacer esto");
-          }}
-        >
-          <i className="bi bi-pencil-square"></i>
-        </button>
       </div>
       <Dialog
         open={showObjectiveDialog}
@@ -156,7 +178,7 @@ const CardProyecto = ({
         </button>
         <div className="flex flex-col p-3">
           <h1 className="text-center font-extrabold text-xl mb-2">
-            Objetivos de [Nombre del proyecto]
+            Objetivos de {nombre}
           </h1>
           <div className="flex justify-around">
             <div className="w-1/2 flex flex-col max-h-5/6 mr-1 rounded-sm border border-black py-1 px-2">
