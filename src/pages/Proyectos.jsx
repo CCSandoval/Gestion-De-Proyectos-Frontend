@@ -3,9 +3,11 @@ import CardProyecto from "components/CardProyecto";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useQuery } from "@apollo/client";
+import { useUser } from "context/userContext";
 import { GET_PROYECTOS } from "graphql/proyectos/querys";
 import Loading from "components/Loading";
 const Proyectos = () => {
+  const { userData } = useUser();
   const {
     data: proyectosData,
     loading: proyectosLoading,
@@ -30,13 +32,15 @@ const Proyectos = () => {
       <div className="w-full text-center border-black border-b-2">
         <h1 className="text-6xl py-6">PROYECTOS DE INVESTIGACIÓN</h1>
       </div>
-      <Link
-        to="/gpro/nuevo-proyecto"
-        className="border-2 border-black shadow-md flex items-center justify-center w-11/12 mt-10 rounded-lg p-3 transition duration-200 hover:bg-gray-300"
-      >
-        <i className="bi bi-clipboard-plus text-5xl px-1"></i>
-        <p className="text-5xl px-1">NUEVO PROYECTO</p>
-      </Link>
+      {userData.rol === "LIDER" && (
+        <Link
+          to="/gpro/nuevo-proyecto"
+          className="border-2 border-black shadow-md flex items-center justify-center w-11/12 mt-10 rounded-lg p-3 transition duration-200 hover:bg-gray-300"
+        >
+          <i className="bi bi-clipboard-plus text-5xl px-1"></i>
+          <p className="text-5xl px-1">NUEVO PROYECTO</p>
+        </Link>
+      )}
       {proyectosData.Proyectos.map((p) => {
         return (
           <CardProyecto

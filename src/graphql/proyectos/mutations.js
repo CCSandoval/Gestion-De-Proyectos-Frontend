@@ -26,3 +26,23 @@ export const DESACTIVAR_PROYECTO = gql`
     }
   }
 `;
+
+export const CREAR_PROYECTO = gql`
+  mutation CrearProyecto(
+    $nombre: String!
+    $presupuesto: Float!
+    $lider: String!
+    $especificos: [String]!
+    $generales: [String]!
+  ) {
+    crearProyecto(
+      nombre: $nombre
+      presupuesto: $presupuesto
+      lider: $lider
+      especificos: $especificos
+      generales: $generales
+    ) {
+      _id
+    }
+  }
+`;
