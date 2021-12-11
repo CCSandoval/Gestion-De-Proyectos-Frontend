@@ -4,6 +4,7 @@ import useFormData from 'hooks/useFormData';
 import {EDITAR_USUARIO} from 'graphql/usuarios/mutations'
 import { useMutation } from '@apollo/client';
 import { useUser } from "context/userContext";
+import { toast } from 'react-toastify';
 
 
 
@@ -16,19 +17,21 @@ const MiPerfil = () => {
 
     const [nombreUsuario, setNombreUsuario] = useState('');
     const [correoUsuario,setCorreoUsuario ] = useState('');
-    const [identificacion, setIdentificacion] = useState(0);
+    const [identificacion, setIdentificacion] = useState('');
     const [contraseña, setContraseña] = useState('');
 
     const submitForm = (e) => {
       e.preventDefault();
 
       editarPerfil({
-        variables: { ...formData, usuario: userData._id, nombreUsuario: nombreUsuario, correoUsuario: correoUsuario, identificacion: identificacion,  contraseña:contraseña },
+        variables: { id: userData._id, nombres: nombreUsuario, correo: correoUsuario, identificacion: identificacion,  password:contraseña },
+      }).then(()=>{
+        toast.success('Usuario modificado correctamente, por favor cerrar sesion para ver los cambios');
+
+      }).catch(()=>{
+        toast.error('Error modificando el usuario');
       })
     };
-
-
-   
 
     return (
       <>
@@ -106,10 +109,10 @@ const MiPerfil = () => {
                   N- Identificacón
                 </label>
                 <input
-                  onChange={(e)=>{setIdentificacion(parseFloat(e.target.value))}}
+                  onChange={(e)=>{setIdentificacion(e.target.value)}}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="username"
-                  type="number"
+                  type="text"
                   name="identificacion"
                 />
               </div>
@@ -131,16 +134,16 @@ const MiPerfil = () => {
             </div>
           
           <div className="flex justify-evenly">
-            <i 
-            onClick={()=>{setNombreUsuario(nombreUsuario) && setCorreoUsuario(correoUsuario) && setIdentificacion(identificacion) && setContraseña(contraseña)}}
-            className="bi bi-check-circle-fill text-green-500 text-4xl cursor-pointer mx-auto my-4"></i>
+            <button type='submit'><i
+
+                className="bi bi-check-circle-fill text-green-500 text-4xl cursor-pointer mx-auto my-4">
+            </i></button>
+            
             <i
               className="bi bi-x-circle-fill text-red-500 text-4xl cursor-pointer mx-auto my-4"
-              onClick={() => {
-                  
-                setNewProfile(!newProfile);
-              }}
-            ></i>
+              onClick={() => {setNewProfile(!newProfile);
+              }}>     
+              </i>
           </div>
           </form>
         </div>

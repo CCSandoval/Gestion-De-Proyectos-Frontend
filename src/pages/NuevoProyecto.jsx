@@ -2,7 +2,6 @@ import { CREAR_PROYECTO } from 'graphql/proyectos/mutations';
 import { useMutation } from '@apollo/client';
 import useFormData from 'hooks/useFormData';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { useUser } from 'context/userContext';
 
@@ -79,9 +78,16 @@ const NuevoProyecto = () => {
           onSubmit={submitForm}
           onChange={updateFormData}
           ref={form}>
-          <input type="text" className="py-2 px-2 w-60 border border-gray-500" placeholder="Ingrese el nombre del proyecto " name = "nombre"/>
+          <input type="text" 
+          className="py-2 px-2 w-60 border border-gray-500"
+          placeholder="Ingrese el nombre del proyecto"
+          name="nombre"/>
+
           <br />
-          <input type="number" onChange={(e)=>{setPresupuesto(parseFloat(e.target.value))}} className="py-2 px-2 w-80 mt-4 border border-gray-500 " placeholder="Ingrese el presupuesto del proyecto" name = "presupuesto"/>
+          <input type="number" onChange={(e)=>{setPresupuesto(parseFloat(e.target.value))}} 
+          className="py-2 px-2 w-80 mt-4 border border-gray-500 " 
+          placeholder="Ingrese el presupuesto del proyecto" 
+          name= "presupuesto"/>
           
           
           <h3 className=" text-3xl mt-5">Objetivos del proyecto</h3>
@@ -90,7 +96,7 @@ const NuevoProyecto = () => {
             <div className="border border-gray-400 w-full">
               <p className="pt-2 text-xl">Generales</p>
               <div> 
-                
+
                 <input className="border border-gray-500 rounded py-2 pl-2" placeholder = "Ingrese un objetivo"
                 onChange = {(e)=>{setobjetivoGeneral(e.target.value)}}></input>
                 <i className="bi bi-check-circle-fill text-green-500 text-2xl cursor-pointer mx-auto my-4 pl-4 pr-2 inline-block" 
@@ -107,7 +113,8 @@ const NuevoProyecto = () => {
               <div> 
                 <input className="border border-gray-500 rounded py-2 pl-2" placeholder = "Ingrese un objetivo"
                 onChange = {(e)=>{setobjetivoEspecifico(e.target.value)}}></input>
-                <i className="bi bi-check-circle-fill text-green-500 text-2xl cursor-pointer mx-auto my-4 pl-4 pr-2 inline-block" onClick = {()=>{setObjetivosEspecificos([...objectivosEspecificos,objetivoEspecifico])}}></i>
+                <i className="bi bi-check-circle-fill text-green-500 text-2xl cursor-pointer mx-auto my-4 pl-4 pr-2 inline-block" 
+                onClick = {()=>{setObjetivosEspecificos([...objectivosEspecificos,objetivoEspecifico])}}></i>
               </div>
               <ul name="comment" className="border border-gray-500 mt-2 pl-8 pb-12 m-10"  name="ObjetivosEspecificos" >
               {objectivosEspecificos.map((e)=>{return <li>{e}</li>})}
