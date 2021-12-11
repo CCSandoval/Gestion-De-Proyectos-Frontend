@@ -7,3 +7,19 @@ export const CREAR_INSCRIPCION = gql`
     }
   }
 `;
+
+export const ACEPTAR_INSCRIPCION = gql`
+  mutation AceptarInscripcion($aceptarInscripcionId: String!) {
+    aceptarInscripcion(id: $aceptarInscripcionId) {
+      _id
+    }
+  }
+`;
+
+export const RECHAZAR_INSCRIPCION = gql`
+  mutation RechazarInscripcion($rechazarInscripcionId: String!) {
+    rechazarInscripcion(id: $rechazarInscripcionId) {
+      _id
+    }
+  }
+`;

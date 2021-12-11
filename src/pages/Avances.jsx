@@ -11,6 +11,56 @@ import { useMutation } from "@apollo/client";
 import { CREAR_AVANCE } from "graphql/avances/mutations";
 import { GET_PROYECTO } from "graphql/proyectos/querys";
 import { useUser } from "context/userContext";
+import { ACEPTAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+import { RECHAZAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+
+const Inscripcion = ({ data, setDialog }) => {
+  const [
+    Accept,
+    { data: acceptData, loading: acceptLoading, error: acceptError },
+  ] = useMutation(ACEPTAR_INSCRIPCION);
+
+  const [Deny, { data: denyData, loading: denyLoading, error: denyError }] =
+    useMutation(RECHAZAR_INSCRIPCION);
+
+  const AceptarInscripcion = () => {
+    Accept({ variables: { aceptarInscripcionId: data._id } }).then((s) => {
+      toast.success(
+        "Inscripcion aceptada, recarga la página para ver los cambios"
+      );
+    });
+    setDialog(false);
+  };
+
+  const RechazarInscripcion = () => {
+    Deny({ variables: { rechazarInscripcionId: data._id } }).then((s) => {
+      toast.success("Inscripcion rechazada");
+    });
+    setDialog(false);
+  };
+
+  return (
+    <div className="m-3 w-full flex justify-around">
+      <span>{`${data.estudiante.nombres} ${data.estudiante.apellidos}`}</span>
+      <div>
+        <button
+          onClick={() => {
+            AceptarInscripcion();
+          }}
+        >
+          <i className="bi bi-check-circle-fill duration-300 hover:text-green-400 text-green-500 text-3xl mx-1"></i>
+        </button>
+        <button
+          onClick={() => {
+            RechazarInscripcion();
+          }}
+        >
+          <i className="bi bi-x-circle-fill duration-300 hover:text-red-400 text-red-500 text-3xl"></i>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Avances = () => {
   const { _id } = useParams();
@@ -18,6 +68,7 @@ const Avances = () => {
   const [showCrearAvance, setShowCrearAvance] = useState(false);
   const [avance, setAvance] = useState("");
   const { userData } = useUser();
+
   const [
     crearAvance,
     { data: dataAvance, loading: loadingAvance, error: errorAvance },
@@ -36,9 +87,6 @@ const Avances = () => {
   } = useQuery(GET_AVANCES, { variables: { id: _id } });
 
   const nuevoAvance = () => {
-    console.log("avance", avance);
-    console.log("proyecto", proyectoData.Proyecto.nombre);
-    console.log("usuario", userData._id);
     crearAvance({
       variables: {
         descripcion: avance,
@@ -72,7 +120,7 @@ const Avances = () => {
       <div className="flex w-full justify-center text-3xl bg-gray-200 p-2">
         {proyectoData.Proyecto.nombre}
       </div>
-      <div className="flex w-full justify-around">
+      <div className="flex w-full">
         <div className="flex flex-col p-5 w-4/5 h-screen bg-gray-200 border-t-2 border-gray-600">
           <div className="flex w-full justify-center p-1 text-xl mx-5">
             AVANCES
@@ -83,23 +131,25 @@ const Avances = () => {
                 onClick={() => {
                   setShowCrearAvance(true);
                 }}
-                className=" w-auto bg-green-400 p-3 rounded-lg hover:bg-green-500 shadow-md"
+                className="w-auto bg-green-400 p-3 rounded-lg hover:bg-green-500 shadow-md"
               >
                 AÑADIR AVANCE
               </button>
             </div>
-            {avancesData.avancesPorProyecto.map((p) => {
-              return (
-                <CardAvances
-                  ob={p.descripcion}
-                  fecha={p.fecha}
-                  estudiante={`${p.creadoPor.nombres} ${p.creadoPor.apellidos}`}
-                  estudianteId={p.creadoPor._id}
-                  id={p._id}
-                  key={p._id}
-                />
-              );
-            })}
+            <div className="flex flex-col-reverse">
+              {avancesData.avancesPorProyecto.map((p) => {
+                return (
+                  <CardAvances
+                    ob={p.descripcion}
+                    fecha={p.fecha}
+                    estudiante={`${p.creadoPor.nombres} ${p.creadoPor.apellidos}`}
+                    estudianteId={p.creadoPor._id}
+                    id={p._id}
+                    key={p._id}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
         <div className="flex flex-col items-center p-5 w-2/5 bg-gray-200 border-t-2 border-l-2 border-gray-600">
@@ -133,25 +183,19 @@ const Avances = () => {
             }}
             className="flex justify-end p-1 bi bi-x-circle cursor-pointer text-xl"
           ></i>
-
           <h2 className="flex justify-center m-3">
-            Inscripciones a {proyectoData.Proyecto.nombre}
+            Inscripciones pendientes a&nbsp;
+            <span className="font-bold">{proyectoData.Proyecto.nombre}</span>
           </h2>
-          <div className="flex flex-col justify-between items-center m-3 border-2 border-gray-300">
+          <div className="flex flex-col justify-between items-center m-3 border-2 p-5 border-gray-300">
             {proyectoData.Proyecto.inscripciones.map((i) => {
-              if (i.estado !== "ACEPTADA") {
+              if (i.estado === "PENDIENTE") {
                 return (
-                  <div className="m-3 w-full flex justify-around">
-                    <span>{`${i.estudiante.nombres} ${i.estudiante.apellidos}`}</span>
-                    <div>
-                      <button>
-                        <i className="bi bi-check-circle-fill text-green-500 text-3xl mx-1"></i>
-                      </button>
-                      <button>
-                        <i className="bi bi-x-circle-fill text-red-500 text-3xl"></i>
-                      </button>
-                    </div>
-                  </div>
+                  <Inscripcion
+                    key={i._id}
+                    data={i}
+                    setDialog={setInscription}
+                  />
                 );
               }
             })}
@@ -173,7 +217,8 @@ const Avances = () => {
             onChange={(e) => {
               setAvance(e.target.value);
             }}
-            className="p-3"
+            className="p-3 border-2 border-black rounded-md"
+            placeholder="Ingresa tu avance..."
             cols="30"
             rows="10"
           ></textarea>

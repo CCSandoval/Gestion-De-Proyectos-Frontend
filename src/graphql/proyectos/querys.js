@@ -44,6 +44,7 @@ export const GET_PROYECTO = gql`
         apellidos
       }
       inscripciones {
+        _id
         estado
         estudiante {
           nombres
