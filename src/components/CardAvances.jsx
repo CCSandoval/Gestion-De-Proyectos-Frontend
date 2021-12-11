@@ -1,13 +1,33 @@
 import { Dialog, Tooltip } from "@material-ui/core";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "context/userContext";
+import { useMutation } from "@apollo/client";
+import { EDITAR_AVANCE } from "graphql/avances/mutations";
+import { toast, ToastContainer } from "react-toastify";
 
 const CardAvances = ({ id, fecha, ob, estudiante }) => {
   const { userData } = useUser();
   const [checkInfo, setCheckInfo] = useState(false);
   const [isediting, setIsediting] = useState(false);
   const [descripcion, setDescripcion] = useState(ob);
+  const [editarAvance, { data, loading, error }] = useMutation(EDITAR_AVANCE);
+
+  const editAvance = () => {
+    editarAvance({
+      variables: {
+        id: id,
+        descripcion: descripcion,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (data) {
+      toast.success("Avance Editado con éxito");
+    }
+  }, [data]);
+
   const Icono = () => {
     if (userData.rol !== "LIDER") {
       return (
@@ -48,6 +68,7 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
                   <i
                     className="bi bi-check-circle-fill cursor-pointer m-1 text-xl text-green-500 font-bold hover:text-green-700 shadow-md"
                     onClick={() => {
+                      editAvance();
                       setIsediting(false);
                     }}
                   ></i>
@@ -56,7 +77,7 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
                   <i
                     className="bi bi-x-circle-fill cursor-pointer m-1 text-xl text-red-500 font-bold hover:text-red-700 shadow-md"
                     onClick={() => {
-                      setDescripcion(ob)
+                      setDescripcion(ob);
                       setIsediting(false);
                     }}
                   ></i>
@@ -111,6 +132,7 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
           </ul>
         </div>
       </Dialog>
+      <ToastContainer position="bottom-center" autoClose={5000} />
     </div>
   );
 };

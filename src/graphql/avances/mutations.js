@@ -15,3 +15,12 @@ export const CREAR_AVANCE = gql`
     }
   }
 `;
+
+export const EDITAR_AVANCE = gql`
+  mutation EditarAvance($id: String!, $descripcion: String) {
+    editarAvance(_id: $id, descripcion: $descripcion) {
+      _id
+      descripcion
+    }
+  }
+`;
