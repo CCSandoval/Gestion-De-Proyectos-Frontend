@@ -1,13 +1,15 @@
 import { Dialog, Tooltip } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
+import { useUser } from "context/userContext";
 
-const CardAvances = ({ id, fecha, ob, icono }) => {
+const CardAvances = ({ id, fecha, ob, estudiante }) => {
+  const { userData } = useUser();
   const [checkInfo, setCheckInfo] = useState(false);
   const [isediting, setIsediting] = useState(false);
-
-  const Icono = ({ icon }) => {
-    if (icon === "info-circle") {
+  const [descripcion, setDescripcion] = useState(ob);
+  const Icono = () => {
+    if (userData.rol !== "LIDER") {
       return (
         <button
           onClick={() => {
@@ -16,14 +18,14 @@ const CardAvances = ({ id, fecha, ob, icono }) => {
           className="flex flex-col justify-center items-center"
         >
           <span className="text-xs">Ver Observación</span>
-          <i className={`bi bi-${icono} w-1/2 text-5xl`}></i>
+          <i className={`bi bi-info-circle w-1/2 text-5xl`}></i>
         </button>
       );
     } else {
       return (
         <button className="flex flex-col justify-center items-center">
           <span className="text-xs">Añadir Observación</span>
-          <i className={`bi bi-${icon} w-1/2 text-5xl`}></i>
+          <i className={`bi bi-plus-circle w-1/2 text-5xl`}></i>
         </button>
       );
     }
@@ -33,12 +35,14 @@ const CardAvances = ({ id, fecha, ob, icono }) => {
     <div className="flex flex-col p-2 border-2 border-gray-500 m-5 rounded-lg">
       <div className="flex w-full justify-between p-2">
         <span>{`Id del avance: ${id}`}</span>
+        <span>{`Responsable: ${estudiante}`}</span>
         <span>{`Fecha ${fecha.toString().split("T")[0]}`}</span>
       </div>
       <div className="flex w-full justify-around">
         {isediting ? (
           <div className="flex w-3/4 m-1 p-1">
             <div className="flex flex-col">
+              <span>Aportes del Avance: </span>
               <div className="flex flex-row">
                 <Tooltip title="Confirmar edición" arrow>
                   <i
@@ -52,21 +56,26 @@ const CardAvances = ({ id, fecha, ob, icono }) => {
                   <i
                     className="bi bi-x-circle-fill cursor-pointer m-1 text-xl text-red-500 font-bold hover:text-red-700 shadow-md"
                     onClick={() => {
+                      setDescripcion(ob)
                       setIsediting(false);
                     }}
                   ></i>
                 </Tooltip>
               </div>
-              <span>Aportes del Avance: </span>
             </div>
             <textarea
               type="text"
-              className="w-full p-1 m-1 overflow-y-scroll rounded-md bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+              value={descripcion}
+              onChange={(e) => {
+                setDescripcion(e.target.value);
+              }}
+              className="w-full p-1 m-1 overflow-y-scroll rounded-md focus:outline-none focus:ring"
             ></textarea>
           </div>
         ) : (
           <div className="flex w-3/4 m-1 p-1">
             <div className="flex flex-col">
+              <span>Aportes del Avance: </span>
               <div className="flex flex-row">
                 <Tooltip title="Editar avance" arrow>
                   <i
@@ -77,18 +86,12 @@ const CardAvances = ({ id, fecha, ob, icono }) => {
                   ></i>
                 </Tooltip>
               </div>
-              <span>Aportes del Avance: </span>
             </div>
-            <p className="w-full">
-              Luctus phasellus tincidunt eleifend porta parturient non tortor
-              dictumst, aliquet vestibulum himenaeos pulvinar ullamcorper
-              euismod mollis vitae platea, conubia posuere cubilia feugiat
-              habitant blandit pretium.
-            </p>
+            <p className="w-full">{descripcion}</p>
           </div>
         )}
         <div className="flex flex-col justify-center items-center cursor-pointer">
-          <Icono icon={icono} />
+          <Icono />
         </div>
       </div>
       <Dialog open={checkInfo}>

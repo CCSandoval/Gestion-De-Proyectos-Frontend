@@ -24,7 +24,7 @@ import Registro from "pages/auth/Registro";
 
 //Crear un link con la dirección del backend
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000/graphql",
+  uri: "http://localhost:8080/graphql",
 });
 
 //Crea el contexto y le pone el token

@@ -10,6 +10,7 @@ query AvancesPorProyecto($id: String!) {
     creadoPor {
       _id
       nombres
+      apellidos
     }
   }
 }
