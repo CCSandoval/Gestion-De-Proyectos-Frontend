@@ -158,14 +158,16 @@ const Avances = () => {
           </div>
           <div className="w-full flex flex-col justify-center items-center">
             <div className="flex w-full justify-center">
-              <button
-                onClick={() => {
-                  setInscription(!inscription);
-                }}
-                className="w-auto bg-green-400 p-3 m-5 rounded-lg hover:bg-green-500 shadow-md"
-              >
-                VER INSCRIPCIONES
-              </button>
+              {userData.rol === "LIDER" && (
+                <button
+                  onClick={() => {
+                    setInscription(!inscription);
+                  }}
+                  className="w-auto bg-green-400 p-3 m-5 rounded-lg hover:bg-green-500 shadow-md"
+                >
+                  VER INSCRIPCIONES
+                </button>
+              )}
             </div>
           </div>
           {proyectoData.Proyecto.usuarios.map((u) => {
