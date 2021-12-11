@@ -107,6 +107,7 @@ const CardProyecto = ({
           </div>
           <div className="w-full flex items-center justify-center">
             {userData.rol === "ESTUDIANTE" ? (
+              isActive ? (
               <button
                 type="button"
                 className="transform duration-300 bg-green-600 hover:bg-green-500 px-10 rounded-md text-white text-lg"
@@ -116,6 +117,10 @@ const CardProyecto = ({
               >
                 Quiero Inscribirme
               </button>
+              ):(
+              <span className="transform duration-300 select-none bg-red-500 hover:bg-red-500 px-10 rounded-md text-white text-lg">
+                No está activo el proyecto
+              </span>)
             ) : (
               <span className="transform duration-300 select-none bg-red-500 hover:bg-red-500 px-10 rounded-md text-white text-lg">
                 No eres estudiante
