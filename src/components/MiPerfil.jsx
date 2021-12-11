@@ -21,16 +21,28 @@ const MiPerfil = () => {
     const [contraseña, setContraseña] = useState('');
 
     const submitForm = (e) => {
+      let nombres= nombreUsuario
+      let correo = correoUsuario
+      let userId = identificacion
+      let password = contraseña
+
+      if(nombres === "") {nombres=userData.nombres}
+      if(correo === "") {correo=userData.correo}
+      if(userId === "") {userId = userData.identificacion}
+
       e.preventDefault();
-
-      editarPerfil({
-        variables: { id: userData._id, nombres: nombreUsuario, correo: correoUsuario, identificacion: identificacion,  password:contraseña },
-      }).then(()=>{
-        toast.success('Usuario modificado correctamente, por favor cerrar sesion para ver los cambios');
-
-      }).catch(()=>{
-        toast.error('Error modificando el usuario');
-      })
+      if(password === ""){
+        toast.error("Ingresa tu contraseña actual, o una nueva contraseña")
+      }else{
+        editarPerfil({
+          variables: { id: userData._id, nombres: nombres, correo: correo, identificacion: userId,  password:password },
+        }).then(()=>{
+          toast.success('Usuario modificado correctamente, por favor cerrar sesion para ver los cambios');
+          
+        }).catch(()=>{
+          toast.error('Error modificando el usuario');
+        })
+      }
     };
 
     return (
