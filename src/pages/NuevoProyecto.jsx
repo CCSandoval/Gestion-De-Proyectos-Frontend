@@ -90,9 +90,12 @@ const NuevoProyecto = () => {
             <div className="border border-gray-400 w-full">
               <p className="pt-2 text-xl">Generales</p>
               <div> 
+                
                 <input className="border border-gray-500 rounded py-2 pl-2" placeholder = "Ingrese un objetivo"
                 onChange = {(e)=>{setobjetivoGeneral(e.target.value)}}></input>
-                <i className="bi bi-check-circle-fill text-green-500 text-2xl cursor-pointer mx-auto my-4 pl-4 pr-2 inline-block" onClick = {()=>{setObjetivosGenerales([...objectivosGenerales,objetivoGeneral])}}></i>
+                <i className="bi bi-check-circle-fill text-green-500 text-2xl cursor-pointer mx-auto my-4 pl-4 pr-2 inline-block" 
+                onClick = {()=>{setObjetivosGenerales([...objectivosGenerales,objetivoGeneral])}}></i>
+
               </div>
               <ul name="comment" className="border border-gray-500 mt-2 pl-8 pb-12 m-10"  name="ObjetivosGenerales">
               {objectivosGenerales.map((e)=>{return <li>{e}</li>})} 
