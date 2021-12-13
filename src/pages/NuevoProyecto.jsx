@@ -25,34 +25,14 @@ const NuevoProyecto = () => {
     e.preventDefault();
 
     delete formData.presupuesto;
-    crearProyecto({
-      variables: { ...formData, presupuesto: presupuesto, lider: userData._id, generales: objectivosGenerales, especificos: objectivosEspecificos },
-    })
-  };
-
-  // useEffect(()=>{
-  //   console.log(objectivosEspecificos.length)
-  //   for (var i =0; i< objectivosEspecificos.length; i++){
-  //     crearObjetivo({
-  //       variables:{
-  //         descripcion: objectivosEspecificos[i],
-  //         tipo: "ESPECIFICO",
-  //         proyecto: mutationData.crearProyecto._id,
-  //       }          
-  //     })
-  //   } 
-  //   for (var i =0; i< objectivosGenerales.length; i++){
-  //     crearObjetivo({
-  //       variables:{
-  //         descripcion: objectivosGenerales[i],
-  //         tipo: "GENERAL",
-  //         proyecto: mutationData.crearProyecto._id,
-  //       }          
-  //     })
-  //   } 
-  // },[proyectoCreado]);
-
-    
+    if(objectivosEspecificos === [] || objectivosGenerales === []){
+      toast.error("Ingrese los objetivos")
+    }else{
+      crearProyecto({
+        variables: { ...formData, presupuesto: presupuesto, lider: userData._id, generales: objectivosGenerales, especificos: objectivosEspecificos },
+      })
+    }
+  };   
   
 
   const [presupuesto, setPresupuesto] = useState(0);
