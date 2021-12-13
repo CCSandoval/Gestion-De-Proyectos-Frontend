@@ -25,7 +25,7 @@ const NuevoProyecto = () => {
     e.preventDefault();
 
     delete formData.presupuesto;
-    if(objectivosEspecificos === [] || objectivosGenerales === []){
+    if(objectivosEspecificos.length === 0 || objectivosGenerales.length === 0){
       toast.error("Ingrese los objetivos")
     }else{
       crearProyecto({
