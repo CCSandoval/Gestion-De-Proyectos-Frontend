@@ -127,24 +127,27 @@ const Avances = () => {
           </div>
           <div>
             <div className="flex w-full justify-center m-5">
-              <button
-                onClick={() => {
-                  setShowCrearAvance(true);
-                }}
-                className="w-auto bg-green-400 p-3 rounded-lg hover:bg-green-500 shadow-md"
-              >
-                AÑADIR AVANCE
-              </button>
+              {userData.rol === "ESTUDIANTE" && (
+                <button
+                  onClick={() => {
+                    setShowCrearAvance(true);
+                  }}
+                  className="w-auto bg-green-400 p-3 rounded-lg hover:bg-green-500 shadow-md"
+                >
+                  AÑADIR AVANCE
+                </button>
+              )}
             </div>
             <div className="flex flex-col-reverse">
               {avancesData.avancesPorProyecto.map((p) => {
                 return (
                   <CardAvances
-                    ob={p.descripcion}
+                    descripcion={p.descripcion}
                     fecha={p.fecha}
                     estudiante={`${p.creadoPor.nombres} ${p.creadoPor.apellidos}`}
                     estudianteId={p.creadoPor._id}
                     id={p._id}
+                    observaciones={p.observaciones}
                     key={p._id}
                   />
                 );

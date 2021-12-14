@@ -5,28 +5,58 @@ import { useUser } from "context/userContext";
 import { useMutation } from "@apollo/client";
 import { EDITAR_AVANCE } from "graphql/avances/mutations";
 import { toast, ToastContainer } from "react-toastify";
+import { NUEVA_OBSERVACION } from "graphql/avances/mutations";
 
-const CardAvances = ({ id, fecha, ob, estudiante }) => {
+const CardAvances = ({ id, fecha, descripcion, estudiante, observaciones }) => {
   const { userData } = useUser();
   const [checkInfo, setCheckInfo] = useState(false);
   const [isediting, setIsediting] = useState(false);
-  const [descripcion, setDescripcion] = useState(ob);
-  const [editarAvance, { data, loading, error }] = useMutation(EDITAR_AVANCE);
+  const [descripcionState, setDescripcionState] = useState(descripcion);
+  const [editarAvance, { data: editAvanceData, loading, error }] =
+    useMutation(EDITAR_AVANCE);
+  const [
+    nuevaObservacion,
+    {
+      data: nuevaObservacionData,
+      loading: nuevaObservacionLoading,
+      error: nuevaObservacionError,
+    },
+  ] = useMutation(NUEVA_OBSERVACION);
+  const [showCrearObservacion, setShowCrearObservacion] = useState(false);
+  const [observacion, setObservacion] = useState("");
 
   const editAvance = () => {
     editarAvance({
       variables: {
         id: id,
-        descripcion: descripcion,
+        descripcion: descripcionState,
       },
     });
   };
 
+  const CrearObservacion = () => {
+    observacion
+      ? nuevaObservacion({ variables: { id: id, observacion: observacion } })
+          .then((s) => {
+            console.log(s);
+            toast.success("Observación creada con éxito");
+            setObservacion("");
+            setShowCrearObservacion(false)
+          })
+          .catch((e) => {
+            console.log(e);
+            toast.error("Error creando la observación");
+            setObservacion("");
+            setShowCrearObservacion(false)
+          })
+      : toast.error("Ingresa una observacion");
+  };
+
   useEffect(() => {
-    if (data) {
+    if (editAvanceData) {
       toast.success("Avance Editado con éxito");
     }
-  }, [data]);
+  }, [editAvanceData]);
 
   const Icono = () => {
     if (userData.rol !== "LIDER") {
@@ -43,7 +73,10 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
       );
     } else {
       return (
-        <button className="flex flex-col justify-center items-center">
+        <button
+          onClick={() => setShowCrearObservacion(true)}
+          className="flex flex-col justify-center items-center"
+        >
           <span className="text-xs">Añadir Observación</span>
           <i className={`bi bi-plus-circle w-1/2 text-5xl`}></i>
         </button>
@@ -77,7 +110,7 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
                   <i
                     className="bi bi-x-circle-fill cursor-pointer m-1 text-xl text-red-500 font-bold hover:text-red-700 shadow-md"
                     onClick={() => {
-                      setDescripcion(ob);
+                      setDescripcionState(descripcion);
                       setIsediting(false);
                     }}
                   ></i>
@@ -86,9 +119,9 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
             </div>
             <textarea
               type="text"
-              value={descripcion}
+              value={descripcionState}
               onChange={(e) => {
-                setDescripcion(e.target.value);
+                setDescripcionState(e.target.value);
               }}
               className="w-full p-1 m-1 overflow-y-scroll rounded-md focus:outline-none focus:ring"
             ></textarea>
@@ -121,15 +154,60 @@ const CardAvances = ({ id, fecha, ob, estudiante }) => {
             onClick={() => {
               setCheckInfo(false);
             }}
-            className="flex justify-end bi bi-x-circle cursor-pointer text-2xl p-1 m-1"
+            className="flex justify-end bi bi-x-circle cursor-pointer text-2xl p-1 mx-1"
           ></i>
-          <h2 className="flex justify-center p-1 m-2 font-bold">
+          <h2 className="flex justify-center p-1 mx-2 text-2xl font-bold">
             OBSERVACIONES
           </h2>
           <ul className="p-3 m-3 border-2 border-gray-300 rounded-md">
-            <li>Escriba aquí las observaciones</li>
-            <li>Escriba aquí las observaciones</li>
+            {observaciones.length ? (
+              observaciones.map((observacion) => {
+                return <li>{observacion}</li>;
+              })
+            ) : (
+              <li>Todavia no hay observaciones</li>
+            )}
           </ul>
+        </div>
+      </Dialog>
+      <Dialog
+        open={showCrearObservacion}
+        onBackdropClick={() => {
+          setShowCrearObservacion(false);
+        }}
+      >
+        <div className="py-4 px-8 flex flex-col">
+          <h1 className="text-3xl font-extrabold text-center mx-16 m-6">
+            Añadir observación
+          </h1>
+          <textarea
+            value={observacion}
+            onChange={(e) => {
+              setObservacion(e.target.value);
+            }}
+            className="p-3 border-2 border-black rounded-md"
+            placeholder="Ingresa tu avance..."
+            cols="30"
+            rows="10"
+          ></textarea>
+          <div className="flex w-full justify-around mt-3">
+            <button
+              type="submit"
+              className="text-4xl"
+              onClick={() => CrearObservacion()}
+            >
+              <i className="bi bi-check-circle-fill duration-200 hover:text-green-500 text-green-600"></i>
+            </button>
+            <button
+              className="text-4xl"
+              onClick={() => {
+                setShowCrearObservacion(false);
+                setObservacion("");
+              }}
+            >
+              <i className="bi bi-x-circle-fill duration-200 hover:text-red-400 text-red-600"></i>
+            </button>
+          </div>
         </div>
       </Dialog>
       <ToastContainer position="bottom-center" autoClose={5000} />

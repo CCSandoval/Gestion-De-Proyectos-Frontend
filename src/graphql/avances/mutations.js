@@ -24,3 +24,11 @@ export const EDITAR_AVANCE = gql`
     }
   }
 `;
+
+export const NUEVA_OBSERVACION = gql`
+  mutation NuevaObservacion($id: String!, $observacion: String) {
+    nuevaObservacion(_id: $id, observacion: $observacion) {
+      _id
+    }
+  }
+`;

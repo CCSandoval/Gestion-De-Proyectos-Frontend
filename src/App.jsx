@@ -25,6 +25,7 @@ import Registro from "pages/auth/Registro";
 //Crear un link con la dirección del backend
 const httpLink = createHttpLink({
   uri: "https://gestion-de-proyectos-backend.herokuapp.com/graphql",
+  // uri:"http://localhost:5000/graphql"
 });
 
 //Crea el contexto y le pone el token
