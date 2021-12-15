@@ -3,6 +3,7 @@ import CardAvances from "components/CardAvances";
 import CardInvestigadores from "components/CardInvestigadores";
 import React, { useState } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useQuery } from "@apollo/client";
 import { GET_AVANCES } from "graphql/avances/querys";
@@ -13,6 +14,8 @@ import { GET_PROYECTO } from "graphql/proyectos/querys";
 import { useUser } from "context/userContext";
 import { ACEPTAR_INSCRIPCION } from "graphql/inscripciones/mutations";
 import { RECHAZAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+import { TERMINAR_PROYECTO } from "graphql/proyectos/mutations";
+import ReactLoading from "react-loading";
 
 const Inscripcion = ({ data, setDialog }) => {
   const [
@@ -67,12 +70,12 @@ const Avances = () => {
   const [inscription, setInscription] = useState(false);
   const [showCrearAvance, setShowCrearAvance] = useState(false);
   const [avance, setAvance] = useState("");
+  const [confirmarTerm, setConfirmarTerm] = useState(false);
   const { userData } = useUser();
-
-  const [
-    crearAvance,
-    { data: dataAvance, loading: loadingAvance, error: errorAvance },
-  ] = useMutation(CREAR_AVANCE);
+  const navigate = useNavigate();
+  const [crearAvance] = useMutation(CREAR_AVANCE);
+  const [terminarProyectoMut, { loading: terminarLoading }] =
+    useMutation(TERMINAR_PROYECTO);
 
   const {
     data: proyectoData,
@@ -85,6 +88,21 @@ const Avances = () => {
     error: avancesError,
     loading: avancesLoading,
   } = useQuery(GET_AVANCES, { variables: { id: _id } });
+
+  const terminarProyecto = () => {
+    terminarProyectoMut({
+      variables: { id: _id },
+    })
+      .then((s) => {
+        console.log(s);
+        toast.success("Proyecto terminado");
+        navigate("/gpro/proyectos-liderados");
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error("Hubo un error terminando el proyecto");
+      });
+  };
 
   const nuevoAvance = () => {
     crearAvance({
@@ -117,8 +135,26 @@ const Avances = () => {
 
   return (
     <>
-      <div className="flex w-full justify-center text-3xl bg-gray-200 p-2">
-        {proyectoData.Proyecto.nombre}
+      <div className="flex justify-between items-center px-6 py-3 w-full text-3xl bg-gray-200">
+        <div>
+          <span className="text-2xl">Fase: {proyectoData.Proyecto.fase}</span>
+        </div>
+        <div>
+          <span>{proyectoData.Proyecto.nombre}</span>
+        </div>
+        <div>
+          {proyectoData.Proyecto.fase === "DESARROLLO" &&
+            userData.rol === "LIDER" && (
+              <button
+                onClick={() => {
+                  setConfirmarTerm(true);
+                }}
+                className="duration-300 bg-red-600 text-white p-2 rounded-lg hover:bg-red-500"
+              >
+                <p>Terminar Proyecto</p>
+              </button>
+            )}
+        </div>
       </div>
       <div className="flex w-full">
         <div className="flex flex-col p-5 w-4/5 h-screen bg-gray-200 border-t-2 border-gray-600">
@@ -243,6 +279,44 @@ const Avances = () => {
               }}
             >
               <i className="bi bi-x-circle-fill duration-200 hover:text-red-400 text-red-600"></i>
+            </button>
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        open={confirmarTerm}
+        onBackdropClick={() => {
+          setConfirmarTerm(false);
+        }}
+      >
+        <div className="py-3 px-6">
+          <h1 className="text-2xl font-extrabold">
+            Seguro que quieres terminar este proyecto?
+          </h1>
+          <div className="flex justify-around my-3">
+            <button
+              onClick={() => {
+                terminarProyecto();
+              }}
+              className="flex items-center transform duration-300 bg-green-500 hover:bg-green-400 rounded-md px-9 py-3"
+            >
+              {terminarLoading ? (
+                <ReactLoading type="spin" height={30} width={30} />
+              ) : (
+                <>
+                  <i className="far fa-check-circle text-black text-2xl mr-3" />
+                  <p className="text-white font-bold text-xl">Si</p>
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                setConfirmarTerm(false);
+              }}
+              className="flex items-center transform duration-300  bg-red-500 hover:bg-red-400 rounded-md px-9 py-3"
+            >
+              <p className="text-white font-bold text-xl">No</p>
+              <i className="far fa-times-circle text-black text-2xl ml-3" />
             </button>
           </div>
         </div>

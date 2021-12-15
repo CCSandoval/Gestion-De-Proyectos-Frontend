@@ -27,6 +27,14 @@ export const DESACTIVAR_PROYECTO = gql`
   }
 `;
 
+export const TERMINAR_PROYECTO = gql`
+  mutation TerminarProyecto($id: String!) {
+    terminarProyecto(_id: $id) {
+      _id
+    }
+  }
+`;
+
 export const CREAR_PROYECTO = gql`
   mutation CrearProyecto(
     $nombre: String!
