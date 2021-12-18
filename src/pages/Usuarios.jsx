@@ -60,6 +60,7 @@ const Usuarios = () => {
           <CardUser
             key={u._id}
             _id={u._id}
+            identificacion={u.identificacion}
             nombres={u.nombres}
             apellidos={u.apellidos}
             estado={u.estado}

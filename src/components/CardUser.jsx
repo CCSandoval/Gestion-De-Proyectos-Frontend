@@ -1,16 +1,14 @@
-import React, { useState,useEffect } from "react";
-import Dialog from "@mui/material/Dialog";
-import Tooltip from "@mui/material/Tooltip";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useUser } from "context/userContext";
 import { useMutation } from "@apollo/client";
 import {ACEPTAR_USUARIO} from "graphql/usuarios/mutations";
 import {RECHAZAR_USUARIO} from "graphql/usuarios/mutations";
-import ReactLoading from "react-loading";
 
 const CardUser = ({
   _id,
   correo,
+  identificacion,
   nombres,
   apellidos,
   estado,
@@ -20,11 +18,9 @@ const CardUser = ({
   const { userData } = useUser();
   const [
     aceptUser,
-    { data: activateData, loading: activateLoading, error: activateError },
   ] = useMutation(ACEPTAR_USUARIO);
   const [
     rejectUser,
-    { data: deactivateData, loading: deactivateLoader, error: deactivateError },
   ] = useMutation(RECHAZAR_USUARIO);
 
   const aceptarUsuario = (e) => {
@@ -52,7 +48,7 @@ const CardUser = ({
         
           <div className="h-full w-full">
           
-          <div className="flex flex justify-around mt-2 ml-10">
+          <div className="flex justify-around mt-2 ml-10">
             <div className="flex flex-col w-full">
               <span className="text-md">{`${_id}`}</span>
               <span className="text-4xl">{`${nombres} ${apellidos}`}</span>
@@ -85,6 +81,7 @@ const CardUser = ({
             <div className="flex flex-col w-full">
               <span className="text-lg">{`${correo}`}</span>
               <span className="text-4xl">{`${rol}`}</span>
+              <span className="text-lg">{`${identificacion}`}</span>
             </div>
             </div>
         </div>
