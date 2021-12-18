@@ -64,7 +64,7 @@ const PrivateLayout = () => {
 
   return (
     <div className="flex flex-col md:flex-row flex-no-wrap h-screen">
-      {userData.estado !== "PENDIENTE" ? (
+      {userData.estado === "PENDIENTE" || userData.estado === "RECHAZADO" ? (
         <div className="flex flex-col w-screen justify-center items-center">
           <img src={warning} alt="Imágen de error" />
           <div>No estás autorizado, contáctate con un admin</div>
