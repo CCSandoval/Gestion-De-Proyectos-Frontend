@@ -65,16 +65,9 @@ const PrivateLayout = () => {
   return (
     <div className="flex flex-col md:flex-row flex-no-wrap h-screen">
       {userData.estado !== "PENDIENTE" ? (
-        <div className="flex w-full h-full">
-          <Sidebar />
-          <div className="w-full h-full overflow-y-scroll bg-gray-200">
-            <Outlet />
-          </div>
-        </div>
-      ) : (
         <div className="flex flex-col w-screen justify-center items-center">
           <img src={warning} alt="Imágen de error" />
-          <div>Todavía no has sido autorizado, contáctate con un admin</div>
+          <div>No estás autorizado, contáctate con un admin</div>
           <button
             onClick={() => {
               setToken(null);
@@ -83,6 +76,13 @@ const PrivateLayout = () => {
           >
             <span className="underline hover:text-gray-500">Cerrar sesión</span>
           </button>
+        </div>
+      ) : (
+        <div className="flex w-full h-full">
+          <Sidebar />
+          <div className="w-full h-full overflow-y-scroll bg-gray-200">
+            <Outlet />
+          </div>
         </div>
       )}
       <ToastContainer />
